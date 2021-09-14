@@ -1,5 +1,4 @@
 -r base.txt
 -r tests.txt
 pdbpp
-pretty_errors
 unimport

@@ -1,71 +1,71 @@
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
-## What it includes
+# Installation
 
-Set for python3.9
+```pip install futurelog```
 
-- Linters: pylint, mypy, pycodestyle, pydocstyle
-- Code analysis: pytest, bandit
-- Auto format: black, isort, unimport
-- Build: tox, setuptools, pex
-- Pretty stacktraces: pretty-errors
+# Usage
 
-## Bootstrap
+## Introduction
 
-```bash
-python -m venv .venv
-source .venv/bin/activate
-pip install -r requirements/dev.txt
+The goal of this library is to provide a way to defer logs and consume (print) them when needed, in an async application.
+
+For instance, it would perfectly fit a config deployer in async. It would help to keep messages grouped by servers.
+
+Usage should be limited to reporting and not error/exception logging.
+Also you should ensure you catch all possible exception in your program in your entrypoint, in order to consume all logs before exiting your application.
+
+## Create a logger
+
+```python
+from futurelog import FutureLogger
+
+future_logger = FutureLogger(__name__)
 ```
 
-Or using invoke (you need invoke package to be installed on your system):
-```bash
-invoke install
+## Register logs
+
+The methods supported are: `.debug()`, `.info()`, `.warning()`, `.error()`, `.critical()`
+
+```python
+future_logger.debug(topic, msg)
 ```
 
-Put your code in `app/`
-
-> :warning: **NOTE**: If you add or rename the packages at root level (app/), you need to update the following files:
-> - tox.ini
-> - setup.py
-
-## Run your app
-
-Run the start script:
-```bash
-python start.py
+Example:
+```python
+future_logger.debug("server1", "deploying stuff 1")
+future_logger.error("server1", "failed")
+future_logger.debug("server2", "deploying stuff 1")
+future_logger.warning("server2", "success")
 ```
 
-Install the PEX in your environment, and run it:
-```bash
-pip install -e .  # To do only once
-run-app
+## Consume logs
+
+### One specific logger
+
+```python
+logger.consume(topic)
 ```
 
-Run from invoke:
-```bash
-invoke start
+Example:
+```python
+future_logger.consume("server1")
+future_logger.consume("server2")
 ```
 
-## Autoformat script
+### All loggers for a topic (one for each module)
 
-The template configuration includes: black, isort and unimport.
-
-They can all be executed in the righ order thanks to tox:
-```bash
-tox -e format
+```python
+FutureLogger.consume_all_logger_for(topic)
 ```
 
-It can also be triggered with invoke:
-```bash
-invoke reformat
+```python
+FutureLogger.consume_all_logger_for("server1")
+FutureLogger.consume_all_logger_for("server2")
 ```
 
-## Lint and build
+### All unconsumed logger
 
-Simply use `tox`:
-
-```bash
-tox  # check your code
-tox -e bundle  # build the python PEX in dist/
+```python
+FutureLogger.consume_all_logger()
 ```

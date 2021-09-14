@@ -20,10 +20,3 @@ def reformat(cmd):
     with cmd.prefix(f"source {PATH}/.venv/bin/activate"):
         cmd.run(f"isort {PATH}/")
         cmd.run(f"black {PATH}/")
-
-
-@task
-def start(cmd):
-    """Start the app."""
-    with cmd.prefix(f"source {PATH}/.venv/bin/activate"):
-        cmd.run(f"python {PATH}/start.py", pty=True)
