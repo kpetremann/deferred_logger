@@ -50,7 +50,7 @@ class FutureLogger:
             for log in all_logs:
                 self.logger.log(log.level, log.msg, *log.args)
 
-        self.logs = {}
+        self.logs = defaultdict(list)
 
     @classmethod
     def consume_all_logger(cls):
@@ -61,7 +61,7 @@ class FutureLogger:
         for logger in cls.ALL_LOGGERS:
             for logs in logger.logs.values():
                 all_logs.extend(logs)
-                logger.logs = {}
+                logger.logs = defaultdict(list)
 
         # we sort the logs and then we consume them
         sorted_logs = sorted(all_logs, key=lambda x: x.time)
