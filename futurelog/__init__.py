@@ -5,4 +5,4 @@ Useful to keep logging in order in async app.
 Usage example: reporting of deployment on multiple servers.
 """
 
-from futurelog.logger import FutureLog
+from futurelog.logger import FutureLogger
