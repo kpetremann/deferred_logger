@@ -1,0 +1,14 @@
+bandit
+black
+coverage
+invoke
+isort
+mypy
+pydocstyle
+pykwalify
+pylama
+pylint
+pytest
+pytest-mock
+setuptools
+tox
