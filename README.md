@@ -59,6 +59,7 @@ future_logger.consume("server2")
 FutureLogger.consume_all_logger_for(topic)
 ```
 
+Example:
 ```python
 FutureLogger.consume_all_logger_for("server1")
 FutureLogger.consume_all_logger_for("server2")
